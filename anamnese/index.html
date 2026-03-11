@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>MaxResults — Anamnese</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 24px 16px 80px;
+    }
+
+    .header {
+      text-align: center;
+      padding: 32px 0 24px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .header .accent {
+      color: #ffd700;
+    }
+
+    .header p {
+      font-size: 15px;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: #222;
+      border-radius: 2px;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ffd700, #ffaa00);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    .step {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .block-header {
+      text-align: center;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, #1a1400, #0d0d0d);
+      border: 1px solid #2a2200;
+      border-radius: 12px;
+      margin-bottom: 24px;
+    }
+
+    .block-header h3 {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #ffd700;
+      margin-bottom: 4px;
+    }
+
+    .block-header p {
+      font-size: 13px;
+      color: #999;
+    }
+
+    .question {
+      margin-bottom: 24px;
+    }
+
+    .question-number {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #ffd700;
+      margin-bottom: 6px;
+    }
+
+    .question h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .question .subtitle {
+      font-size: 13px;
+      color: #777;
+      margin-bottom: 12px;
+    }
+
+    .warning {
+      padding: 12px 16px;
+      background: #2a1500;
+      border: 1px solid #5a3000;
+      border-radius: 8px;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #ffaa00;
+      line-height: 1.5;
+    }
+
+    .note {
+      padding: 10px 14px;
+      background: #151515;
+      border-left: 3px solid #ffd700;
+      border-radius: 6px;
+      margin: 12px 0;
+      font-size: 13px;
+      color: #aaa;
+      line-height: 1.4;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      background: linear-gradient(135deg, #ffd700, #ffaa00);
+      color: #000;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 6px;
+      margin-top: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 12px 14px;
+      background: #161616;
+      border: 2px solid #222;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .option:hover {
+      border-color: #333;
+      background: #1a1a1a;
+    }
+
+    .option.selected {
+      border-color: #ffd700;
+      background: #1a1800;
+    }
+
+    .option input {
+      display: none;
+    }
+
+    .option .check {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #444;
+      border-radius: 50%;
+      margin-right: 10px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .option .check.checkbox {
+      border-radius: 5px;
+    }
+
+    .option.selected .check {
+      border-color: #ffd700;
+      background: #ffd700;
+    }
+
+    .option.selected .check::after {
+      content: '✓';
+      color: #000;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .option span {
+      font-size: 14px;
+      color: #ccc;
+      line-height: 1.3;
+    }
+
+    .option.selected span {
+      color: #fff;
+    }
+
+    textarea, input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="number"] {
+      width: 100%;
+      padding: 12px 14px;
+      background: #161616;
+      border: 2px solid #222;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus, input[type="date"]:focus, input[type="number"]:focus {
+      border-color: #ffd700;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .input-group {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .input-field label {
+      display: block;
+      font-size: 13px;
+      color: #aaa;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .input-field input {
+      margin-top: 0;
+    }
+
+    .conditional {
+      display: none;
+      margin-top: 12px;
+      padding: 12px;
+      background: #0d0d0d;
+      border-radius: 8px;
+      border: 1px dashed #333;
+    }
+
+    .conditional.show {
+      display: block;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      background: #222;
+      border-radius: 3px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, #ffd700, #ffaa00);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, #ffd700, #ffaa00);
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+    }
+
+    .slider-value {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffd700;
+      margin: 12px 0;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 28px;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 13px 24px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-back {
+      background: #222;
+      color: #888;
+    }
+
+    .btn-back:hover {
+      background: #2a2a2a;
+      color: #aaa;
+    }
+
+    .btn-next {
+      background: linear-gradient(135deg, #ffd700, #ffaa00);
+      color: #000;
+      flex: 1;
+    }
+
+    .btn-next:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+    }
+
+    .btn-next:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #00c853, #00a843);
+      color: #fff;
+      flex: 1;
+      font-size: 16px;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(0, 200, 83, 0.3);
+    }
+
+    .success-screen {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .success-screen .emoji {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+
+    .success-screen h2 {
+      font-size: 24px;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .success-screen p {
+      font-size: 15px;
+      color: #888;
+      line-height: 1.6;
+    }
+
+    .step-counter {
+      text-align: center;
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 480px) {
+      .input-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Max<span class="accent">Results</span></h1>
+      <p>Anamnese Inicial — vamos te conhecer melhor! 💪</p>
+    </div>
+
+    <div class="step-counter" id="stepCounter">Etapa 1 de 18</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width: 5.5%"></div>
+    </div>
+
+    <form id="anamneseForm">
+      
+      <!-- STEP 1: Nome -->
+      <div class="step active" data-step="1">
+        <div class="block-header">
+          <h3>Bloco 1 de 8</h3>
+          <p>Dados Pessoais</p>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 1</div>
+          <h2>Qual o seu nome completo?</h2>
+          <input type="text" id="q1_nome" placeholder="Nome completo..." required>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Data nasc + Idade + Gênero -->
+      <div class="step" data-step="2">
+        <div class="question">
+          <div class="question-number">Perguntas 2-3</div>
+          <h2>Data de nascimento e gênero</h2>
+          <div class="input-group">
+            <div class="input-field">
+              <label>Data de nascimento</label>
+              <input type="date" id="q2_data_nasc" onchange="calcIdade()">
+            </div>
+            <div class="input-field">
+              <label>Idade (anos)</label>
+              <input type="number" id="q2_idade" placeholder="Ex: 30" readonly>
+            </div>
+            <div class="input-field">
+              <label>Gênero</label>
+              <div class="options" data-name="q2_genero" data-type="radio">
+                <label class="option"><input type="radio" name="q2_genero" value="Masculino"><div class="check"></div><span>Masculino</span></label>
+                <label class="option"><input type="radio" name="q2_genero" value="Feminino"><div class="check"></div><span>Feminino</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Altura + Peso -->
+      <div class="step" data-step="3">
+        <div class="question">
+          <div class="question-number">Perguntas 4-5</div>
+          <h2>Altura e peso</h2>
+          <div class="input-row">
+            <div class="input-field">
+              <label>Altura (cm)</label>
+              <input type="number" id="q3_altura" placeholder="Ex: 170">
+            </div>
+            <div class="input-field">
+              <label>Peso (kg)</label>
+              <input type="number" id="q4_peso" placeholder="Ex: 70">
+            </div>
+          </div>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 4: Email + Tel -->
+      <div class="step" data-step="4">
+        <div class="question">
+          <div class="question-number">Perguntas 6-7</div>
+          <h2>Contato</h2>
+          <div class="input-group">
+            <div class="input-field">
+              <label>E-mail</label>
+              <input type="email" id="q5_email" placeholder="seu@email.com">
+            </div>
+            <div class="input-field">
+              <label>Telefone / WhatsApp</label>
+              <input type="tel" id="q6_telefone" placeholder="(41) 99999-9999">
+            </div>
+          </div>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 5: Profissão -->
+      <div class="step" data-step="5">
+        <div class="question">
+          <div class="question-number">Pergunta 8</div>
+          <h2>Qual a sua profissão?</h2>
+          <input type="text" id="q7_profissao" placeholder="Sua profissão...">
+          <div style="margin-top: 16px;">
+            <h2 style="font-size: 16px;">Seu trabalho é muito parado?</h2>
+            <div class="options" data-name="q7_parado" data-type="radio" style="margin-top: 8px;">
+              <label class="option"><input type="radio" name="q7_parado" value="Sim"><div class="check"></div><span>Sim</span></label>
+              <label class="option"><input type="radio" name="q7_parado" value="Não"><div class="check"></div><span>Não</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 6: PAR-Q 8-10 -->
+      <div class="step" data-step="6">
+        <div class="block-header">
+          <h3>Bloco 2 de 8</h3>
+          <p>Saúde & Segurança (PAR-Q)</p>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 9</div>
+          <h2>Alguma vez seu médico disse que você possui algum problema cardíaco e recomendou que só praticasse atividade física sob prescrição médica?</h2>
+          <div class="options" data-name="q8_cardiaco" data-type="radio">
+            <label class="option"><input type="radio" name="q8_cardiaco" value="Sim"><div class="check"></div><span>Sim</span></label>
+            <label class="option"><input type="radio" name="q8_cardiaco" value="Não"><div class="check"></div><span>Não</span></label>
+          </div>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 10</div>
+          <h2>No último mês você sentiu dor torácica quando praticava atividade física?</h2>
+          <div class="options" data-name="q9_dor_toracica_ativo" data-type="radio">
+            <label class="option"><input type="radio" name="q9_dor_toracica_ativo" value="Sim"><div class="check"></div><span>Sim</span></label>
+            <label class="option"><input type="radio" name="q9_dor_toracica_ativo" value="Não"><div class="check"></div><span>Não</span></label>
+          </div>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 11</div>
+          <h2>No último mês você sentiu dor torácica quando NÃO estava praticando atividade física?</h2>
+          <div class="options" data-name="q10_dor_toracica_repouso" data-type="radio">
+            <label class="option"><input type="radio" name="q10_dor_toracica_repouso" value="Sim"><div class="check"></div><span>Sim</span></label>
+            <label class="option"><input type="radio" name="q10_dor_toracica_repouso" value="Não"><div class="check"></div><span>Não</span></label>
+          </div>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 7: PAR-Q 11-13 -->
+      <div class="step" data-step="7">
+        <div class="question">
+          <div class="question-number">Pergunta 12</div>
+          <h2>Você perdeu o equilíbrio por tonturas ou perdeu a consciência durante atividade física?</h2>
+          <div class="options" data-name="q11_tontura" data-type="radio">
+            <label class="option"><input type="radio" name="q11_tontura" value="Sim"><div class="check"></div><span>Sim</span></label>
+            <label class="option"><input type="radio" name="q11_tontura" value="Não"><div class="check"></div><span>Não</span></label>
+          </div>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 13</div>
+          <h2>Você tem algum problema ósseo ou articular que poderia ser agravado com a prática de atividade física?</h2>
+          <div class="options" data-name="q12_osseo" data-type="radio">
+            <label class="option"><input type="radio" name="q12_osseo" value="Sim"><div class="check"></div><span>Sim</span></label>
+            <label class="option"><input type="radio" name="q12_osseo" value="Não"><div class="check"></div><span>Não</span></label>
+          </div>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 14</div>
+          <h2>Seu médico já recomendou o uso de medicamentos para controle da pressão arterial ou condição cardiovascular?</h2>
+          <div class="options" data-name="q13_medicamento_pressao" data-type="radio">
+            <label class="option"><input type="radio" name="q13_medicamento_pressao" value="Sim"><div class="check"></div><span>Sim</span></label>
+            <label class="option"><input type="radio" name="q13_medicamento_pressao" value="Não"><div class="check"></div><span>Não</span></label>
+          </div>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 8: PAR-Q 14-16 -->
+      <div class="step" data-step="8">
+        <div class="question">
+          <div class="question-number">Pergunta 15</div>
+          <h2>Você tem conhecimento de alguma outra razão física que impeça a participação em atividades físicas?</h2>
+          <div class="options" data-name="q14_impedimento" data-type="radio">
+            <label class="option"><input type="radio" name="q14_impedimento" value="Sim"><div class="check"></div><span>Sim</span></label>
+            <label class="option"><input type="radio" name="q14_impedimento" value="Não"><div class="check"></div><span>Não</span></label>
+          </div>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 16</div>
+          <h2>Você tem alguma restrição ao exercício?</h2>
+          <div class="options" data-name="q15_restricao" data-type="radio">
+            <label class="option"><input type="radio" name="q15_restricao" value="Sim" onchange="toggleConditional('cond_restricao', this.checked)"><div class="check"></div><span>Sim</span></label>
+            <label class="option"><input type="radio" name="q15_restricao" value="Não" onchange="toggleConditional('cond_restricao', false)"><div class="check"></div><span>Não</span></label>
+          </div>
+          <div id="cond_restricao" class="conditional">
+            <label style="display: block; font-size: 13px; color: #aaa; margin-bottom: 6px;">Descreva a restrição:</label>
+            <input type="text" id="q15_restricao_desc" placeholder="Qual restrição?">
+          </div>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 17</div>
+          <h2>Você tem alguma doença?</h2>
+          <div class="options" data-name="q16_doenca" data-type="radio">
+            <label class="option"><input type="radio" name="q16_doenca" value="Sim" onchange="toggleConditional('cond_doenca', this.checked)"><div class="check"></div><span>Sim</span></label>
+            <label class="option"><input type="radio" name="q16_doenca" value="Não" onchange="toggleConditional('cond_doenca', false)"><div class="check"></div><span>Não</span></label>
+          </div>
+          <div id="cond_doenca" class="conditional">
+            <label style="display: block; font-size: 13px; color: #aaa; margin-bottom: 6px;">Qual doença?</label>
+            <input type="text" id="q16_doenca_desc" placeholder="Qual doença?">
+          </div>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 9: PAR-Q 17-19 -->
+      <div class="step" data-step="9">
+        <div class="question">
+          <div class="question-number">Pergunta 18</div>
+          <h2>Você toma algum remédio de uso contínuo?</h2>
+          <div class="options" data-name="q17_remedio" data-type="radio">
+            <label class="option"><input type="radio" name="q17_remedio" value="Sim" onchange="toggleConditional('cond_remedio', this.checked)"><div class="check"></div><span>Sim</span></label>
+            <label class="option"><input type="radio" name="q17_remedio" value="Não" onchange="toggleConditional('cond_remedio', false)"><div class="check"></div><span>Não</span></label>
+          </div>
+          <div id="cond_remedio" class="conditional">
+            <label style="display: block; font-size: 13px; color: #aaa; margin-bottom: 6px;">Qual remédio?</label>
+            <input type="text" id="q17_remedio_desc" placeholder="Qual remédio?">
+          </div>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 19</div>
+          <h2>Algum parente próximo (pai, mãe, irmão ou irmã) teve ataque cardíaco ou problema cardiovascular antes dos 50 anos?</h2>
+          <div class="options" data-name="q18_familia_cardiaco" data-type="radio">
+            <label class="option"><input type="radio" name="q18_familia_cardiaco" value="Sim"><div class="check"></div><span>Sim</span></label>
+            <label class="option"><input type="radio" name="q18_familia_cardiaco" value="Não"><div class="check"></div><span>Não</span></label>
+          </div>
+        </div>
+        <div class="question" id="q19_gravida_container">
+          <div class="question-number">Pergunta 20</div>
+          <h2>Você está grávida?</h2>
+          <div class="options" data-name="q19_gravida" data-type="radio">
+            <label class="option"><input type="radio" name="q19_gravida" value="Sim"><div class="check"></div><span>Sim</span></label>
+            <label class="option"><input type="radio" name="q19_gravida" value="Não"><div class="check"></div><span>Não</span></label>
+          </div>
+        </div>
+        <div class="warning">
+          ⚠️ Se qualquer resposta de saúde for 'sim', requer liberação médica antes de iniciar.
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 10: Objetivo -->
+      <div class="step" data-step="10">
+        <div class="block-header">
+          <h3>Bloco 3 de 8</h3>
+          <p>Objetivo e Perfil de Treino</p>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 21</div>
+          <h2>Qual o seu principal objetivo com o treinamento?</h2>
+          <div class="options" data-name="q20_objetivo" data-type="radio">
+            <label class="option"><input type="radio" name="q20_objetivo" value="Ganho de massa muscular / Hipertrofia"><div class="check"></div><span>Ganho de massa muscular / Hipertrofia</span></label>
+            <label class="option"><input type="radio" name="q20_objetivo" value="Emagrecimento / Redução de medidas"><div class="check"></div><span>Emagrecimento / Redução de medidas</span></label>
+            <label class="option"><input type="radio" name="q20_objetivo" value="Definição muscular"><div class="check"></div><span>Definição muscular</span></label>
+            <label class="option"><input type="radio" name="q20_objetivo" value="Condicionamento físico geral"><div class="check"></div><span>Condicionamento físico geral</span></label>
+          </div>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 11: Preferência treino -->
+      <div class="step" data-step="11">
+        <div class="question">
+          <div class="question-number">Pergunta 22</div>
+          <h2>Você prefere treinar com:</h2>
+          <div class="options" data-name="q21_preferencia" data-type="radio">
+            <label class="option"><input type="radio" name="q21_preferencia" value="Musculação tradicional (máquinas, barras, halteres)"><div class="check"></div><span>Musculação tradicional (máquinas, barras, halteres)</span></label>
+            <label class="option"><input type="radio" name="q21_preferencia" value="Aulas de ginástica em vídeo (com música)"><div class="check"></div><span>Aulas de ginástica em vídeo (com música)</span></label>
+            <label class="option"><input type="radio" name="q21_preferencia" value="Uma combinação dos dois"><div class="check"></div><span>Uma combinação dos dois</span></label>
+          </div>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 12: Frequência + Tempo -->
+      <div class="step" data-step="12">
+        <div class="question">
+          <div class="question-number">Pergunta 23</div>
+          <h2>Quantas vezes por semana se compromete a treinar?</h2>
+          <div class="options" data-name="q22_frequencia" data-type="radio">
+            <label class="option"><input type="radio" name="q22_frequencia" value="3"><div class="check"></div><span>3 vezes por semana</span></label>
+            <label class="option"><input type="radio" name="q22_frequencia" value="4"><div class="check"></div><span>4 vezes por semana</span></label>
+            <label class="option"><input type="radio" name="q22_frequencia" value="5"><div class="check"></div><span>5 vezes por semana</span></label>
+          </div>
+          <div class="note">⚠️ Mínimo recomendado: 3x/semana</div>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 24</div>
+          <h2>Quanto tempo por dia você tem disponível para treinar?</h2>
+          <div class="options" data-name="q23_tempo" data-type="radio">
+            <label class="option"><input type="radio" name="q23_tempo" value="30min"><div class="check"></div><span>30 minutos</span></label>
+            <label class="option"><input type="radio" name="q23_tempo" value="45min"><div class="check"></div><span>45 minutos</span></label>
+            <label class="option"><input type="radio" name="q23_tempo" value="1h"><div class="check"></div><span>1 hora</span></label>
+            <label class="option"><input type="radio" name="q23_tempo" value="1h30"><div class="check"></div><span>1 hora e 30 minutos</span></label>
+            <label class="option"><input type="radio" name="q23_tempo" value="2h+"><div class="check"></div><span>2 horas ou mais</span></label>
+          </div>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 13: Experiência + Expectativa + Prazo -->
+      <div class="step" data-step="13">
+        <div class="question">
+          <div class="question-number">Pergunta 25</div>
+          <h2>Treina há quanto tempo?</h2>
+          <div class="options" data-name="q24_experiencia" data-type="radio">
+            <label class="option"><input type="radio" name="q24_experiencia" value="Nunca treinei" onchange="showBadge('Iniciante')"><div class="check"></div><span>Nunca treinei</span></label>
+            <label class="option"><input type="radio" name="q24_experiencia" value="Menos de 6 meses" onchange="showBadge('Iniciante')"><div class="check"></div><span>Menos de 6 meses</span></label>
+            <label class="option"><input type="radio" name="q24_experiencia" value="6 meses a 2 anos" onchange="showBadge('Intermediário')"><div class="check"></div><span>6 meses a 2 anos</span></label>
+            <label class="option"><input type="radio" name="q24_experiencia" value="Mais de 2 anos" onchange="showBadge('Avançado')"><div class="check"></div><span>Mais de 2 anos</span></label>
+          </div>
+          <div id="badge_container"></div>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 26</div>
+          <h2>Qual a sua expectativa para o treino?</h2>
+          <div class="options" data-name="q25_expectativa" data-type="radio">
+            <label class="option"><input type="radio" name="q25_expectativa" value="Leve"><div class="check"></div><span>Leve</span></label>
+            <label class="option"><input type="radio" name="q25_expectativa" value="Moderado"><div class="check"></div><span>Moderado</span></label>
+            <label class="option"><input type="radio" name="q25_expectativa" value="Intenso"><div class="check"></div><span>Intenso</span></label>
+          </div>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 27</div>
+          <h2>Em quanto tempo almeja alcançar seus objetivos?</h2>
+          <div class="options" data-name="q26_prazo" data-type="radio">
+            <label class="option"><input type="radio" name="q26_prazo" value="Curto prazo"><div class="check"></div><span>Curto prazo (1-3 meses)</span></label>
+            <label class="option"><input type="radio" name="q26_prazo" value="Médio prazo"><div class="check"></div><span>Médio prazo (3-6 meses)</span></label>
+            <label class="option"><input type="radio" name="q26_prazo" value="Longo prazo"><div class="check"></div><span>Longo prazo (6+ meses)</span></label>
+          </div>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 14: Ênfase + Aeróbica -->
+      <div class="step" data-step="14">
+        <div class="block-header">
+          <h3>Bloco 4 de 8</h3>
+          <p>Preferências</p>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 28</div>
+          <h2>Você deseja dar ênfase em alguma parte do corpo?</h2>
+          <div class="subtitle">Opcional — ex: "pernas", "abdômen", "braços"</div>
+          <input type="text" id="q27_enfase" placeholder="Opcional...">
+        </div>
+        <div class="question" id="q28_aerobica_container">
+          <div class="question-number">Pergunta 29</div>
+          <h2>Quais modalidades de aula aeróbica te interessam?</h2>
+          <div class="subtitle">Pode marcar vários!</div>
+          <div class="options" data-name="q28_aerobica" data-type="checkbox">
+            <label class="option"><input type="checkbox" name="q28_aerobica" value="MaxStep (step/plataforma — coreografias com step)"><div class="check checkbox"></div><span>MaxStep (step/plataforma — coreografias com step)</span></label>
+            <label class="option"><input type="checkbox" name="q28_aerobica" value="MaxFight (combate — boxe, muay thai com música)"><div class="check checkbox"></div><span>MaxFight (combate — boxe, muay thai com música)</span></label>
+            <label class="option"><input type="checkbox" name="q28_aerobica" value="MaxCicle (spinning — bicicleta indoor)"><div class="check checkbox"></div><span>MaxCicle (spinning — bicicleta indoor)</span></label>
+            <label class="option"><input type="checkbox" name="q28_aerobica" value="MaxJump (trampolim — jump com música)"><div class="check checkbox"></div><span>MaxJump (trampolim — jump com música)</span></label>
+          </div>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 15: Música -->
+      <div class="step" data-step="15">
+        <div class="question">
+          <div class="question-number">Pergunta 30</div>
+          <h2>Qual o estilo de música que mais te agrada?</h2>
+          <div class="subtitle">Ex: Pop, Rock, Eletrônica, Sertanejo, etc.</div>
+          <input type="text" id="q29_musica" placeholder="Estilo de música...">
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 16: Local + Equipamento -->
+      <div class="step" data-step="16">
+        <div class="block-header">
+          <h3>Bloco 5 de 8</h3>
+          <p>Local e Equipamento</p>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 31</div>
+          <h2>Onde você vai treinar?</h2>
+          <div class="options" data-name="q30_local" data-type="radio">
+            <label class="option"><input type="radio" name="q30_local" value="Academia normal" onchange="toggleConditional('cond_equipamento', false)"><div class="check"></div><span>Academia normal</span></label>
+            <label class="option"><input type="radio" name="q30_local" value="Academia do prédio/condomínio" onchange="toggleConditional('cond_equipamento', false)"><div class="check"></div><span>Academia do prédio/condomínio</span></label>
+            <label class="option"><input type="radio" name="q30_local" value="Em casa" onchange="toggleConditional('cond_equipamento', this.checked)"><div class="check"></div><span>Em casa</span></label>
+          </div>
+          <div id="note_academia" class="note" style="display: none;">
+            📧 Favor enviar um vídeo da academia para luisaoribeiro75@gmail.com
+          </div>
+        </div>
+        <div id="cond_equipamento" class="conditional">
+          <div class="question">
+            <div class="question-number">Pergunta 32</div>
+            <h2>Quais equipamentos você tem em casa?</h2>
+            <div class="subtitle">Pode marcar vários!</div>
+            <div class="options" data-name="q31_equipamento" data-type="checkbox">
+              <label class="option"><input type="checkbox" name="q31_equipamento" value="Nenhum"><div class="check checkbox"></div><span>Nenhum</span></label>
+              <label class="option"><input type="checkbox" name="q31_equipamento" value="Caneleira"><div class="check checkbox"></div><span>Caneleira</span></label>
+              <label class="option"><input type="checkbox" name="q31_equipamento" value="Halteres"><div class="check checkbox"></div><span>Halteres</span></label>
+              <label class="option"><input type="checkbox" name="q31_equipamento" value="Barra + anilhas"><div class="check checkbox"></div><span>Barra + anilhas</span></label>
+              <label class="option"><input type="checkbox" name="q31_equipamento" value="Step"><div class="check checkbox"></div><span>Step</span></label>
+              <label class="option"><input type="checkbox" name="q31_equipamento" value="Kit Body Pump completo"><div class="check checkbox"></div><span>Kit Body Pump completo</span></label>
+              <label class="option"><input type="checkbox" name="q31_equipamento" value="Bicicleta ergométrica"><div class="check checkbox"></div><span>Bicicleta ergométrica</span></label>
+              <label class="option"><input type="checkbox" name="q31_equipamento" value="Mini-trampolim"><div class="check checkbox"></div><span>Mini-trampolim</span></label>
+            </div>
+            <div style="margin-top: 10px;">
+              <input type="text" id="q31_equipamento_outro" placeholder="Outros equipamentos? (opcional)">
+            </div>
+          </div>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 17: Estilo de Vida -->
+      <div class="step" data-step="17">
+        <div class="block-header">
+          <h3>Bloco 6 de 8</h3>
+          <p>Estilo de Vida</p>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 33</div>
+          <h2>Numa escala de 0 a 10, qual o nível de estresse no seu dia normal?</h2>
+          <div class="slider-value" id="slider_value">5</div>
+          <input type="range" id="q32_estresse" min="0" max="10" value="5" oninput="document.getElementById('slider_value').textContent = this.value">
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 34</div>
+          <h2>Você faz acompanhamento nutricional?</h2>
+          <div class="options" data-name="q33_nutricao" data-type="radio">
+            <label class="option"><input type="radio" name="q33_nutricao" value="Sim"><div class="check"></div><span>Sim</span></label>
+            <label class="option"><input type="radio" name="q33_nutricao" value="Não"><div class="check"></div><span>Não</span></label>
+          </div>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 35</div>
+          <h2>Qual a sua maior dificuldade no controle alimentar?</h2>
+          <textarea id="q34_dificuldade_alimentar" placeholder="Descreva sua maior dificuldade..."></textarea>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 36</div>
+          <h2>Qual exercício você tem mais dificuldade para executar?</h2>
+          <input type="text" id="q35_dificuldade_exercicio" placeholder="Ex: agachamento, flexão, corrida...">
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 18: Inteligência de Negócio -->
+      <div class="step" data-step="18">
+        <div class="block-header">
+          <h3>Bloco 7 de 8</h3>
+          <p>Inteligência de Negócio</p>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 37</div>
+          <h2>Por onde você conheceu o MaxResults?</h2>
+          <div class="options" data-name="q36_conheceu" data-type="radio">
+            <label class="option"><input type="radio" name="q36_conheceu" value="Indicação"><div class="check"></div><span>Indicação</span></label>
+            <label class="option"><input type="radio" name="q36_conheceu" value="Instagram"><div class="check"></div><span>Instagram</span></label>
+            <label class="option"><input type="radio" name="q36_conheceu" value="Anúncios"><div class="check"></div><span>Anúncios</span></label>
+            <label class="option"><input type="radio" name="q36_conheceu" value="TikTok"><div class="check"></div><span>TikTok</span></label>
+            <label class="option"><input type="radio" name="q36_conheceu" value="Facebook"><div class="check"></div><span>Facebook</span></label>
+            <label class="option"><input type="radio" name="q36_conheceu" value="Outro"><div class="check"></div><span>Outro</span></label>
+          </div>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 38</div>
+          <h2>O que te fez escolher o MaxResults em vez de outras opções?</h2>
+          <textarea id="q37_escolha" placeholder="Conte o que chamou sua atenção..."></textarea>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 39</div>
+          <h2>Você já usou algum app ou plataforma de treino antes? Se sim, qual e por que parou?</h2>
+          <textarea id="q38_app_anterior" placeholder="Ex: Usei o Freeletics por 3 meses, mas achei muito difícil..."></textarea>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 40</div>
+          <h2>Você gostaria de receber mensagens motivacionais duas vezes por semana?</h2>
+          <div class="options" data-name="q39_mensagens" data-type="radio">
+            <label class="option"><input type="radio" name="q39_mensagens" value="Sim"><div class="check"></div><span>Sim</span></label>
+            <label class="option"><input type="radio" name="q39_mensagens" value="Não"><div class="check"></div><span>Não</span></label>
+          </div>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 19: Aceite -->
+      <div class="step" data-step="19">
+        <div class="block-header">
+          <h3>Bloco 8 de 8</h3>
+          <p>Termo de Aceite</p>
+        </div>
+        <div class="question">
+          <div class="question-number">Pergunta 41</div>
+          <h2 style="font-size: 17px; line-height: 1.6;">Assumo a veracidade das informações prestadas no questionário PAR-Q e na anamnese e afirmo estar apto(a) para a participação em atividades físicas.</h2>
+          <div class="options" data-name="q40_aceite" data-type="checkbox" style="margin-top: 16px;">
+            <label class="option"><input type="checkbox" name="q40_aceite" value="Sim, concordo" id="aceite_checkbox"><div class="check checkbox"></div><span>Sim, concordo</span></label>
+          </div>
+        </div>
+        <div class="nav">
+          <button type="button" class="btn btn-back" onclick="prevStep()">← Voltar</button>
+          <button type="button" class="btn btn-submit" id="submit_btn" onclick="submitForm()" disabled>Enviar ✓</button>
+        </div>
+      </div>
+
+      <!-- Success -->
+      <div class="step" data-step="success">
+        <div class="success-screen">
+          <div class="emoji">🎉</div>
+          <h2>Anamnese enviada!</h2>
+          <p>Suas respostas foram recebidas com sucesso.<br>Em breve entraremos em contato! 💪</p>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 19;
+
+    // Handle option selection
+    document.querySelectorAll('.option').forEach(option => {
+      option.addEventListener('click', () => {
+        const input = option.querySelector('input');
+        const container = option.closest('.options');
+        const type = container.dataset.type;
+
+        if (type === 'radio') {
+          container.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+          option.classList.add('selected');
+          input.checked = true;
+
+          // Auto-advance on radio (except for conditional ones)
+          if (!input.onchange) {
+            setTimeout(() => {
+              const nextBtn = document.querySelector('.step.active .btn-next');
+              if (nextBtn && !nextBtn.disabled) nextBtn.click();
+            }, 300);
+          }
+        } else {
+          input.checked = !input.checked;
+          option.classList.toggle('selected', input.checked);
+        }
+      });
+    });
+
+    // Handle aceite checkbox
+    document.getElementById('aceite_checkbox')?.addEventListener('change', (e) => {
+      document.getElementById('submit_btn').disabled = !e.target.checked;
+    });
+
+    // Auto-calc idade
+    function calcIdade() {
+      const dataNasc = document.getElementById('q2_data_nasc').value;
+      if (dataNasc) {
+        const nascDate = new Date(dataNasc);
+        const today = new Date();
+        let age = today.getFullYear() - nascDate.getFullYear();
+        const m = today.getMonth() - nascDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < nascDate.getDate())) age--;
+        document.getElementById('q2_idade').value = age;
+      }
+    }
+
+    // Toggle conditional fields
+    function toggleConditional(id, show) {
+      const el = document.getElementById(id);
+      if (el) {
+        if (show) el.classList.add('show');
+        else el.classList.remove('show');
+      }
+
+      // Handle academia note
+      if (id === 'cond_equipamento') {
+        const localRadios = document.querySelectorAll('input[name="q30_local"]');
+        const selectedLocal = Array.from(localRadios).find(r => r.checked)?.value;
+        const note = document.getElementById('note_academia');
+        if (note) {
+          note.style.display = selectedLocal === 'Academia do prédio/condomínio' ? 'block' : 'none';
+        }
+      }
+    }
+
+    // Show badge
+    function showBadge(level) {
+      const container = document.getElementById('badge_container');
+      container.innerHTML = `<div class="badge">Nível: ${level}</div>`;
+    }
+
+    // Update progress
+    function updateProgress() {
+      const pct = (currentStep / totalSteps) * 100;
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('stepCounter').textContent = 
+        currentStep <= totalSteps ? `Etapa ${currentStep} de ${totalSteps}` : '';
+    }
+
+    // Show step
+    function showStep(n) {
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+      const target = n === 'success' ? 
+        document.querySelector('[data-step="success"]') : 
+        document.querySelector(`[data-step="${n}"]`);
+      if (target) {
+        target.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Handle conditional visibility for Q19 (pregnancy) and Q28 (aerobica)
+        if (n === 9) {
+          const genero = document.querySelector('input[name="q2_genero"]:checked')?.value;
+          document.getElementById('q19_gravida_container').style.display = 
+            genero === 'Feminino' ? 'block' : 'none';
+        }
+
+        if (n === 14) {
+          const objetivo = document.querySelector('input[name="q20_objetivo"]:checked')?.value;
+          document.getElementById('q28_aerobica_container').style.display = 
+            objetivo?.includes('Hipertrofia') ? 'none' : 'block';
+        }
+
+        if (n === 16) {
+          const localRadios = document.querySelectorAll('input[name="q30_local"]');
+          const selectedLocal = Array.from(localRadios).find(r => r.checked)?.value;
+          const note = document.getElementById('note_academia');
+          if (note) {
+            note.style.display = selectedLocal === 'Academia do prédio/condomínio' ? 'block' : 'none';
+          }
+        }
+      }
+    }
+
+    // Navigation
+    function nextStep() {
+      if (currentStep < totalSteps) {
+        currentStep++;
+        showStep(currentStep);
+        updateProgress();
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        showStep(currentStep);
+        updateProgress();
+      }
+    }
+
+    // Collect data
+    function collectData() {
+      const data = {};
+      
+      // Block 1 - Dados Pessoais
+      data.nome = document.getElementById('q1_nome')?.value || '';
+      data.data_nascimento = document.getElementById('q2_data_nasc')?.value || '';
+      data.idade = document.getElementById('q2_idade')?.value || '';
+      data.genero = document.querySelector('input[name="q2_genero"]:checked')?.value || '';
+      data.altura_cm = document.getElementById('q3_altura')?.value || '';
+      data.peso_kg = document.getElementById('q4_peso')?.value || '';
+      data.email = document.getElementById('q5_email')?.value || '';
+      data.telefone = document.getElementById('q6_telefone')?.value || '';
+      data.profissao = document.getElementById('q7_profissao')?.value || '';
+      data.trabalho_parado = document.querySelector('input[name="q7_parado"]:checked')?.value || '';
+
+      // Block 2 - PAR-Q
+      data.parq_cardiaco = document.querySelector('input[name="q8_cardiaco"]:checked')?.value || '';
+      data.parq_dor_toracica_ativo = document.querySelector('input[name="q9_dor_toracica_ativo"]:checked')?.value || '';
+      data.parq_dor_toracica_repouso = document.querySelector('input[name="q10_dor_toracica_repouso"]:checked')?.value || '';
+      data.parq_tontura = document.querySelector('input[name="q11_tontura"]:checked')?.value || '';
+      data.parq_osseo = document.querySelector('input[name="q12_osseo"]:checked')?.value || '';
+      data.parq_medicamento_pressao = document.querySelector('input[name="q13_medicamento_pressao"]:checked')?.value || '';
+      data.parq_impedimento = document.querySelector('input[name="q14_impedimento"]:checked')?.value || '';
+      data.restricao_exercicio = document.querySelector('input[name="q15_restricao"]:checked')?.value || '';
+      data.restricao_desc = document.getElementById('q15_restricao_desc')?.value || '';
+      data.doenca = document.querySelector('input[name="q16_doenca"]:checked')?.value || '';
+      data.doenca_desc = document.getElementById('q16_doenca_desc')?.value || '';
+      data.remedio_continuo = document.querySelector('input[name="q17_remedio"]:checked')?.value || '';
+      data.remedio_desc = document.getElementById('q17_remedio_desc')?.value || '';
+      data.familia_cardiaco = document.querySelector('input[name="q18_familia_cardiaco"]:checked')?.value || '';
+      data.gravida = document.querySelector('input[name="q19_gravida"]:checked')?.value || 'N/A';
+
+      // Block 3 - Objetivo e Perfil
+      data.objetivo = document.querySelector('input[name="q20_objetivo"]:checked')?.value || '';
+      data.preferencia_treino = document.querySelector('input[name="q21_preferencia"]:checked')?.value || '';
+      data.frequencia_semanal = document.querySelector('input[name="q22_frequencia"]:checked')?.value || '';
+      data.tempo_disponivel = document.querySelector('input[name="q23_tempo"]:checked')?.value || '';
+      data.experiencia = document.querySelector('input[name="q24_experiencia"]:checked')?.value || '';
+      data.expectativa = document.querySelector('input[name="q25_expectativa"]:checked')?.value || '';
+      data.prazo = document.querySelector('input[name="q26_prazo"]:checked')?.value || '';
+
+      // Block 4 - Preferências
+      data.enfase_corpo = document.getElementById('q27_enfase')?.value || '';
+      data.aerobica = Array.from(document.querySelectorAll('input[name="q28_aerobica"]:checked')).map(i => i.value);
+      data.musica = document.getElementById('q29_musica')?.value || '';
+
+      // Block 5 - Local e Equipamento
+      data.local_treino = document.querySelector('input[name="q30_local"]:checked')?.value || '';
+      data.equipamento = Array.from(document.querySelectorAll('input[name="q31_equipamento"]:checked')).map(i => i.value);
+      const equipOutro = document.getElementById('q31_equipamento_outro')?.value;
+      if (equipOutro) data.equipamento.push('Outro: ' + equipOutro);
+
+      // Block 6 - Estilo de Vida
+      data.estresse = document.getElementById('q32_estresse')?.value || '';
+      data.nutricao = document.querySelector('input[name="q33_nutricao"]:checked')?.value || '';
+      data.dificuldade_alimentar = document.getElementById('q34_dificuldade_alimentar')?.value || '';
+      data.dificuldade_exercicio = document.getElementById('q35_dificuldade_exercicio')?.value || '';
+
+      // Block 7 - Inteligência de Negócio
+      data.como_conheceu = document.querySelector('input[name="q36_conheceu"]:checked')?.value || '';
+      data.porque_escolheu = document.getElementById('q37_escolha')?.value || '';
+      data.app_anterior = document.getElementById('q38_app_anterior')?.value || '';
+      data.mensagens_motivacionais = document.querySelector('input[name="q39_mensagens"]:checked')?.value || '';
+
+      // Block 8 - Aceite
+      data.aceite = document.querySelector('input[name="q40_aceite"]:checked')?.value || '';
+
+      data.timestamp = new Date().toISOString();
+      return data;
+    }
+
+    // Submit to Discord
+    async function submitForm() {
+      const data = collectData();
+
+      // Build Discord embed
+      const embed = {
+        title: `📋 Nova Anamnese — ${data.nome}`,
+        color: 16766720, // #FFD700
+        fields: [
+          {
+            name: '👤 Dados Pessoais',
+            value: `**Nome:** ${data.nome}\n**Idade:** ${data.idade} anos (${data.data_nascimento})\n**Gênero:** ${data.genero}\n**Altura:** ${data.altura_cm} cm | **Peso:** ${data.peso_kg} kg\n**Email:** ${data.email}\n**Telefone:** ${data.telefone}\n**Profissão:** ${data.profissao}\n**Trabalho parado:** ${data.trabalho_parado}`,
+            inline: false
+          },
+          {
+            name: '🏥 PAR-Q (Saúde)',
+            value: `**Problema cardíaco:** ${data.parq_cardiaco}\n**Dor torácica (ativo):** ${data.parq_dor_toracica_ativo}\n**Dor torácica (repouso):** ${data.parq_dor_toracica_repouso}\n**Tontura/perda consciência:** ${data.parq_tontura}\n**Problema ósseo/articular:** ${data.parq_osseo}\n**Medicamento pressão:** ${data.parq_medicamento_pressao}\n**Impedimento físico:** ${data.parq_impedimento}\n**Restrição exercício:** ${data.restricao_exercicio}${data.restricao_desc ? ' (' + data.restricao_desc + ')' : ''}\n**Doença:** ${data.doenca}${data.doenca_desc ? ' (' + data.doenca_desc + ')' : ''}\n**Remédio contínuo:** ${data.remedio_continuo}${data.remedio_desc ? ' (' + data.remedio_desc + ')' : ''}\n**Família c/ problema cardíaco:** ${data.familia_cardiaco}\n**Grávida:** ${data.gravida}`,
+            inline: false
+          },
+          {
+            name: '🎯 Objetivo e Perfil',
+            value: `**Objetivo:** ${data.objetivo}\n**Preferência:** ${data.preferencia_treino}\n**Frequência:** ${data.frequencia_semanal}x/semana\n**Tempo disponível:** ${data.tempo_disponivel}\n**Experiência:** ${data.experiencia}\n**Expectativa:** ${data.expectativa}\n**Prazo:** ${data.prazo}`,
+            inline: false
+          },
+          {
+            name: '🎨 Preferências',
+            value: `**Ênfase corpo:** ${data.enfase_corpo || 'Nenhuma'}\n**Aeróbica:** ${data.aerobica.length ? data.aerobica.join(', ') : 'Nenhuma'}\n**Música:** ${data.musica}`,
+            inline: false
+          },
+          {
+            name: '🏋️ Local e Equipamento',
+            value: `**Local:** ${data.local_treino}\n**Equipamento:** ${data.equipamento.length ? data.equipamento.join(', ') : 'Nenhum'}`,
+            inline: false
+          },
+          {
+            name: '🧘 Estilo de Vida',
+            value: `**Estresse (0-10):** ${data.estresse}\n**Nutricional:** ${data.nutricao}\n**Dificuldade alimentar:** ${data.dificuldade_alimentar || 'N/A'}\n**Dificuldade exercício:** ${data.dificuldade_exercicio || 'N/A'}`,
+            inline: false
+          },
+          {
+            name: '💼 Inteligência de Negócio',
+            value: `**Como conheceu:** ${data.como_conheceu}\n**Por que escolheu:** ${data.porque_escolheu || 'N/A'}\n**App anterior:** ${data.app_anterior || 'N/A'}\n**Mensagens motivacionais:** ${data.mensagens_motivacionais}`,
+            inline: false
+          },
+          {
+            name: '✅ Aceite',
+            value: data.aceite,
+            inline: false
+          }
+        ],
+        footer: {
+          text: `Recebido em ${new Date().toLocaleString('pt-BR')}`
+        },
+        timestamp: new Date().toISOString()
+      };
+
+      // Send to Discord webhook
+      try {
+        await fetch('https://discord.com/api/webhooks/1481341439785828532/GHCDq8TbFVaScC6tYVDFfUfiJ_xhVxRqanwG2oocu7JQG0iMCHVAHKcLbRmRqwNidlpp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ embeds: [embed] })
+        });
+      } catch(e) {
+        console.error('Discord webhook error:', e);
+      }
+
+      // Backup to localStorage
+      const responses = JSON.parse(localStorage.getItem('maxresults_anamnese') || '[]');
+      responses.push(data);
+      localStorage.setItem('maxresults_anamnese', JSON.stringify(responses));
+
+      // Show success
+      showStep('success');
+      document.getElementById('stepCounter').textContent = '';
+      document.getElementById('progressFill').style.width = '100%';
+    }
+
+    // Keyboard support
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        const activeStep = document.querySelector('.step.active');
+        if (activeStep) {
+          const nextBtn = activeStep.querySelector('.btn-next:not(:disabled)');
+          if (nextBtn) {
+            e.preventDefault();
+            nextBtn.click();
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
