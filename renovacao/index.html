@@ -192,6 +192,10 @@
       justify-content: center;
     }
 
+    .option .check.checkbox {
+      border-radius: 5px;
+    }
+
     .option:has(input:checked) .check {
       border-color: #ffd700;
       background: #ffd700;
@@ -665,6 +669,57 @@
             <label class="radio-option">
               <input type="radio" name="Mensagens motivacionais" value="Não">
               <span>Não, só o treino mesmo</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label>Se for usar aulas/cardio, quais modalidades mais te animam?</label>
+          <div class="question-subtitle">Opcional — pode marcar várias. Isso ajuda a deixar o novo plano mais gostoso de seguir.</div>
+          <div class="options" data-name="Modalidades cardio" data-type="checkbox">
+            <label class="option">
+              <input type="checkbox" name="Modalidades cardio" value="MaxStep">
+              <div class="check checkbox"></div>
+              <span>MaxStep</span>
+              <div class="info-icon" onmousedown="event.preventDefault()" onclick="event.preventDefault(); event.stopPropagation();">?
+                <div class="tooltip">
+                  <strong>🎯 MaxStep</strong><br>
+                  Coreografias na plataforma que trabalham pernas, glúteos e condicionamento. Energia alta e sensação de treino poderoso.
+                </div>
+              </div>
+            </label>
+            <label class="option">
+              <input type="checkbox" name="Modalidades cardio" value="MaxFight">
+              <div class="check checkbox"></div>
+              <span>MaxFight</span>
+              <div class="info-icon" onmousedown="event.preventDefault()" onclick="event.preventDefault(); event.stopPropagation();">?
+                <div class="tooltip">
+                  <strong>🥊 MaxFight</strong><br>
+                  Aula inspirada em boxe e muay thai, intensa, explosiva e perfeita pra quem gosta de descarregar energia e suar de verdade.
+                </div>
+              </div>
+            </label>
+            <label class="option">
+              <input type="checkbox" name="Modalidades cardio" value="MaxCicle">
+              <div class="check checkbox"></div>
+              <span>MaxCicle</span>
+              <div class="info-icon" onmousedown="event.preventDefault()" onclick="event.preventDefault(); event.stopPropagation();">?
+                <div class="tooltip">
+                  <strong>🚴 MaxCicle</strong><br>
+                  Pedal com subidas, sprints e muita intensidade. Ótimo pra resistência, pernas fortes e sensação de superação.
+                </div>
+              </div>
+            </label>
+            <label class="option">
+              <input type="checkbox" name="Modalidades cardio" value="MaxJump">
+              <div class="check checkbox"></div>
+              <span>MaxJump</span>
+              <div class="info-icon" onmousedown="event.preventDefault()" onclick="event.preventDefault(); event.stopPropagation();">?
+                <div class="tooltip">
+                  <strong>🤸 MaxJump</strong><br>
+                  Trampolim com música, divertido e viciante. Alto gasto calórico com sensação de leveza e menos impacto nas articulações.
+                </div>
+              </div>
             </label>
           </div>
         </div>
