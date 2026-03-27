@@ -1114,8 +1114,11 @@
           option.classList.add('selected');
           input.checked = true;
 
-          // Auto-advance on radio (except for conditional ones)
-          if (!input.onchange) {
+          // Auto-advance on radio (except for conditional ones OR multi-question steps)
+          const activeStep = document.querySelector('.step.active');
+          const questionCount = activeStep ? activeStep.querySelectorAll('.question').length : 0;
+          
+          if (!input.onchange && questionCount <= 1) {
             setTimeout(() => {
               const nextBtn = document.querySelector('.step.active .btn-next');
               if (nextBtn && !nextBtn.disabled) nextBtn.click();
