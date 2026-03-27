@@ -1393,19 +1393,7 @@
       document.getElementById('progressFill').style.width = '100%';
     }
 
-    // Keyboard support
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        const activeStep = document.querySelector('.step.active');
-        if (activeStep) {
-          const nextBtn = activeStep.querySelector('.btn-next:not(:disabled)');
-          if (nextBtn) {
-            e.preventDefault();
-            nextBtn.click();
-          }
-        }
-      }
-    });
+
   </script>
 </body>
 </html>
