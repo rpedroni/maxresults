@@ -145,6 +145,122 @@
       cursor: pointer;
     }
 
+    .question-subtitle {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.5;
+      margin-top: -2px;
+      margin-bottom: 12px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+
+    .option:has(input:checked) {
+      border-color: #ffd700;
+      background: #1a1a0a;
+    }
+
+    .option input {
+      display: none;
+    }
+
+    .option .check {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #666;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .option:has(input:checked) .check {
+      border-color: #ffd700;
+      background: #ffd700;
+    }
+
+    .option:has(input:checked) .check::after {
+      content: '✓';
+      color: #000;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .option span {
+      flex: 1;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .info-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      margin-left: 8px;
+      background: #333;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffd700;
+      cursor: help;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      right: 0;
+      width: 240px;
+      padding: 10px 12px;
+      background: #1a1a1a;
+      border: 2px solid #ffd700;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #ccc;
+      line-height: 1.4;
+      text-align: left;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 100;
+    }
+
+    .tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      right: 24px;
+      border: 6px solid transparent;
+      border-top-color: #ffd700;
+    }
+
+    .info-icon:hover .tooltip,
+    .info-icon:active .tooltip {
+      opacity: 1;
+    }
+
     .slider-container {
       display: flex;
       align-items: center;
@@ -366,6 +482,46 @@
         </div>
 
         <div class="question">
+          <label>Sabendo da importância do treino com pesos para alcançar seu objetivo, de que forma você prefere treinar? <span class="required">*</span></label>
+          <div class="question-subtitle">Não existe resposta certa ou errada — queremos entender o formato que mais combina com você para montar um plano que você realmente goste de seguir.</div>
+          <div class="options" data-name="Preferência treino com pesos">
+            <label class="option">
+              <input type="radio" name="Preferência treino com pesos" value="Musculação tradicional" required>
+              <div class="check"></div>
+              <span>Musculação tradicional</span>
+              <div class="info-icon" onmousedown="event.preventDefault()" onclick="event.preventDefault(); event.stopPropagation();">?
+                <div class="tooltip">
+                  <strong>🏋️ Musculação tradicional</strong><br>
+                  Treino com aparelhos, halteres, barras e exercícios mais clássicos de academia. Ideal para quem gosta de controle de carga, execução individual e evolução mais tradicional.
+                </div>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="Preferência treino com pesos" value="MaxLift">
+              <div class="check"></div>
+              <span>MaxLift</span>
+              <div class="info-icon" onmousedown="event.preventDefault()" onclick="event.preventDefault(); event.stopPropagation();">?
+                <div class="tooltip">
+                  <strong>🎬 MaxLift</strong><br>
+                  Treino com pesos no ritmo da música, em vídeo, mais dinâmico e envolvente. Une força, resistência muscular e ritmo, deixando o treino mais leve, divertido e motivante.
+                </div>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="Preferência treino com pesos" value="Super Mix">
+              <div class="check"></div>
+              <span>Super Mix (os dois)</span>
+              <div class="info-icon" onmousedown="event.preventDefault()" onclick="event.preventDefault(); event.stopPropagation();">?
+                <div class="tooltip">
+                  <strong>🔥 Super Mix</strong><br>
+                  Combina musculação tradicional com MaxLift. Perfeito para quem quer aproveitar o melhor dos dois mundos: estrutura da musculação + energia e dinamismo do MaxLift.
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="question">
           <label>Qual região do corpo quer dar mais ênfase? <span class="required">*</span></label>
           <input type="text" name="Ênfase corporal" required placeholder="Ex: glúteos, braços, costas, abdômen...">
         </div>
@@ -557,6 +713,23 @@
     const slider = document.getElementById('stressSlider');
     const value = document.getElementById('stressValue');
     slider.addEventListener('input', () => { value.textContent = slider.value; });
+
+    // Mobile tooltip support
+    document.querySelectorAll('.info-icon').forEach(icon => {
+      icon.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const tooltip = icon.querySelector('.tooltip');
+        const isVisible = tooltip.style.opacity === '1';
+
+        document.querySelectorAll('.tooltip').forEach(t => t.style.opacity = '0');
+        tooltip.style.opacity = isVisible ? '0' : '1';
+
+        if (!isVisible) {
+          setTimeout(() => { tooltip.style.opacity = '0'; }, 4000);
+        }
+      });
+    });
 
     // Success page on redirect
     if (window.location.hash === '#sucesso') {
