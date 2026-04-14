@@ -786,6 +786,47 @@
       });
     });
 
+    // Send to Discord webhook + keep FormSubmit email backup
+    const renewalForm = document.getElementById('renewalForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    renewalForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+
+      const formData = new FormData(renewalForm);
+      const entries = Array.from(formData.entries())
+        .filter(([key, value]) => !key.startsWith('_') && value)
+        .map(([key, value]) => `**${key}:** ${value}`);
+
+      const nome = formData.get('Nome') || 'Aluno sem nome';
+
+      const embed = {
+        title: `🔄 Renovação de Treino — ${nome}`,
+        color: 16766720,
+        description: entries.join('\n'),
+        footer: {
+          text: `Recebido em ${new Date().toLocaleString('pt-BR')}`
+        },
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        await fetch('https://discord.com/api/webhooks/1481341439785828532/GHCDq8TbFVaScC6tYVDFfUfiJ_xhVxRqanwG2oocu7JQG0iMCHVAHKcLbRmRqwNidlpp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ embeds: [embed] })
+        });
+      } catch (err) {
+        console.error('Discord webhook error:', err);
+      }
+
+      // Continue normal submit to email backup
+      HTMLFormElement.prototype.submit.call(renewalForm);
+    });
+
     // Success page on redirect
     if (window.location.hash === '#sucesso') {
       document.getElementById('formContainer').style.display = 'none';
